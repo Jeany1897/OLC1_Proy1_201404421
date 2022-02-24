@@ -1,0 +1,31 @@
+package Analizador;
+import java_cup.runtime.Symbol;
+
+parser code {:
+    /*Method that is called when parser can be recovered*/
+	public void syntax_error(Symbol s){ 
+        System.out.println("Unexpected token: " +s.value); 
+    }
+
+	/*Method that is called when parser can't be recovered*/
+	public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
+        System.out.println("Fatal error, unexcepted token: "+s.value); 
+    }
+
+    public void miFuncion() {
+    // ....
+    }
+:}
+
+//-------> Terminales
+terminal String CONJ, LlaveA, Digito, Letra, PyC, Separador, Flecha, DosP, LlaveC, Conc, Disy, Ast, Positiva, Interro; 
+terminal String Tilde, Coma, ComillaSimple, ComillaDoble, CommentA, CommentC, Id;
+
+//-------> No terminales
+non terminal Inicio; 
+non terminal Instrucciones;
+
+start with Inicio;
+
+Inicio ::= LlaveA Instrucciones LlaveC;
+Instrucciones ::= PyC;

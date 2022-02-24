@@ -15,7 +15,8 @@ public class ExpAnalyzer {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        Interfaz inicio = new Interfaz();
+        inicio.setVisible(true);
     }
     
 }

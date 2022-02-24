@@ -5,6 +5,22 @@
  */
 package expanalyzer;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import Analizador.Lexico;
+import Analizador.Sintactico;
+import Analizador.Entrada;
+import java.io.StringReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author Jeany
@@ -17,6 +33,7 @@ public class Interfaz extends javax.swing.JFrame {
     public Interfaz() {
         initComponents();
     }
+    private String NomArch = null;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -27,6 +44,18 @@ public class Interfaz extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtEntrada = new javax.swing.JTextArea();
+        jPanel2 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        txtSalida = new javax.swing.JTextArea();
+        bttAutomatas = new javax.swing.JButton();
+        bttAnalizar = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTree1 = new javax.swing.JTree();
+        cmbReportes = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         JMenuAbrir = new javax.swing.JMenuItem();
@@ -35,6 +64,61 @@ public class Interfaz extends javax.swing.JFrame {
         JMenuSalida = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        txtEntrada.setColumns(20);
+        txtEntrada.setRows(5);
+        jScrollPane1.setViewportView(txtEntrada);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 310, 440));
+
+        jPanel2.setBackground(new java.awt.Color(249, 175, 212));
+
+        txtSalida.setBackground(new java.awt.Color(255, 204, 204));
+        txtSalida.setColumns(20);
+        txtSalida.setRows(5);
+        jScrollPane3.setViewportView(txtSalida);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 588, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 0, 260, 610));
+
+        bttAutomatas.setText("Generar Automatas");
+        jPanel1.add(bttAutomatas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 520, -1, -1));
+
+        bttAnalizar.setText("Analizar Entradas");
+        bttAnalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttAnalizarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(bttAnalizar, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 520, -1, -1));
+
+        jScrollPane2.setViewportView(jTree1);
+
+        jPanel1.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 30, 120, 240));
+
+        cmbReportes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ver imagenes", "Arboles", "Siguientes", "Transiciones", "Automatas" }));
+        jPanel1.add(cmbReportes, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 30, -1, -1));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Fondo.jpg"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-40, 0, -1, -1));
 
         jMenu1.setText("Archivo");
 
@@ -47,12 +131,27 @@ public class Interfaz extends javax.swing.JFrame {
         jMenu1.add(JMenuAbrir);
 
         JMenuGuardar.setText("Guardar");
+        JMenuGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JMenuGuardarActionPerformed(evt);
+            }
+        });
         jMenu1.add(JMenuGuardar);
 
         JMenuGComo.setText("Guardar Como");
+        JMenuGComo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JMenuGComoActionPerformed(evt);
+            }
+        });
         jMenu1.add(JMenuGComo);
 
         JMenuSalida.setText("Generar salida");
+        JMenuSalida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JMenuSalidaActionPerformed(evt);
+            }
+        });
         jMenu1.add(JMenuSalida);
 
         jMenuBar1.add(jMenu1);
@@ -63,19 +162,122 @@ public class Interfaz extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 706, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 503, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void JMenuAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuAbrirActionPerformed
-        // TODO add your handling code here:
+        String ruta = null;
+        JFileChooser seleccionar = new JFileChooser();
+        File archivo; 
+        FileInputStream entrada; 
+        FileOutputStream salida; 
+        
+        seleccionar.setFileFilter(new FileNameExtensionFilter("Expresiones regulares", "exp"));
+        int opcion = seleccionar.showOpenDialog(null);
+        if(opcion == JFileChooser.APPROVE_OPTION)
+        {
+            ruta = seleccionar.getSelectedFile().getAbsolutePath();
+            System.out.println("Abrir el arch "+ ruta);
+            NomArch = ruta;
+        }
+        String texto = "";
+        
+        String documento = new String(), path = ruta;
+        archivo = new File(path);
+        FileReader leer = null;
+        BufferedReader docEntrada  = null;
+        try {
+            leer = new FileReader(archivo);
+            docEntrada = new BufferedReader(leer);
+            while((texto = docEntrada.readLine()) != null)
+            {
+                documento += texto + "\n";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }finally{
+            try {
+                if(null != leer)
+                {
+                    leer.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        txtEntrada.setText(documento);
     }//GEN-LAST:event_JMenuAbrirActionPerformed
+
+    private void bttAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttAnalizarActionPerformed
+        try {
+            Sintactico sintac = new Sintactico(new Lexico(new StringReader(txtEntrada.getText())));
+            sintac.parse();
+        } catch (Exception ex) {
+            Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_bttAnalizarActionPerformed
+
+    private void JMenuGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuGuardarActionPerformed
+        if(NomArch != null){
+            File archivo = new File(NomArch);
+            try {
+                    FileWriter archivos = new FileWriter(archivo);
+                    try (BufferedWriter w = new BufferedWriter(archivos)) {
+                        w.write(txtEntrada.getText());
+                    }
+                } catch (IOException ex) {
+                    System.err.println("Error en Archivo: " + ex.getMessage());
+                }
+        }
+        else{
+            try {
+                String nombre = "";
+                JFileChooser MiArchivo = new JFileChooser(System.getProperty("user.dir"));
+                MiArchivo.showSaveDialog(this);
+                File guardar = MiArchivo.getSelectedFile();
+                if(guardar != null)
+                {
+                    nombre = MiArchivo.getSelectedFile().getName();
+                    FileWriter Guardado = new FileWriter(guardar+".exp");
+                    System.out.println("Nombre del arch "+ guardar+".exp");
+                    Guardado.write(txtEntrada.getText());
+                    Guardado.close();
+                }
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+        }
+    }//GEN-LAST:event_JMenuGuardarActionPerformed
+
+    private void JMenuGComoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuGComoActionPerformed
+        try {
+            String nombre = "";
+            JFileChooser MiArchivo = new JFileChooser(System.getProperty("user.dir"));
+            MiArchivo.showSaveDialog(this);
+            File guardar = MiArchivo.getSelectedFile();
+            if(guardar != null)
+            {
+                nombre = MiArchivo.getSelectedFile().getName();
+                FileWriter Guardado = new FileWriter(guardar+".exp");
+                System.out.println("Nombre del arch "+ guardar+".exp");
+                Guardado.write(txtEntrada.getText());
+                Guardado.close();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }//GEN-LAST:event_JMenuGComoActionPerformed
+
+    private void JMenuSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuSalidaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_JMenuSalidaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -117,7 +319,19 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JMenuItem JMenuGComo;
     private javax.swing.JMenuItem JMenuGuardar;
     private javax.swing.JMenuItem JMenuSalida;
+    private javax.swing.JButton bttAnalizar;
+    private javax.swing.JButton bttAutomatas;
+    private javax.swing.JComboBox<String> cmbReportes;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTree jTree1;
+    private javax.swing.JTextArea txtEntrada;
+    private javax.swing.JTextArea txtSalida;
     // End of variables declaration//GEN-END:variables
 }
