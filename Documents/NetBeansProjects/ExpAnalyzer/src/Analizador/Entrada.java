@@ -13,4 +13,9 @@ import java.util.ArrayList;
 public class Entrada {
     public static ArrayList<String> Error = new ArrayList<>();
     public static ArrayList<Double> Result = new ArrayList<>();
+    
+    public static void LimpiarListas(){
+        Error.clear();
+        Result.clear();
+    }
 }

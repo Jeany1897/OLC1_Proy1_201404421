@@ -1,15 +1,19 @@
 package Analizador;
 import java_cup.runtime.Symbol;
+import java.util.ArrayList;
+import arbol.Conjunto;
+import arbol.Hoja; 
+ 
 
 parser code {:
     /*Method that is called when parser can be recovered*/
 	public void syntax_error(Symbol s){ 
-        System.out.println("Unexpected token: " +s.value); 
+        Entrada.Error.add("Token no reconocido: " +s.value); 
     }
 
 	/*Method that is called when parser can't be recovered*/
 	public void unrecovered_syntax_error(Symbol s) throws java.lang.Exception{ 
-        System.out.println("Fatal error, unexcepted token: "+s.value); 
+        Entrada.Error.add("Fatal error, unexcepted token: "+s.value); 
     }
 
     public void miFuncion() {
@@ -19,13 +23,42 @@ parser code {:
 
 //-------> Terminales
 terminal String CONJ, LlaveA, Digito, Letra, PyC, Separador, Flecha, DosP, LlaveC, Conc, Disy, Ast, Positiva, Interro; 
-terminal String Tilde, Coma, ComillaSimple, ComillaDoble, CommentA, CommentC, Id;
+terminal String Tilde, Coma, ComillaSimple, ComillaDoble, Id, Simbolo, Cadena;
 
 //-------> No terminales
-non terminal Inicio; 
-non terminal Instrucciones;
+non terminal Inicio, ListaInstruc; 
+non terminal Instrucciones, Conjuntos, PosConj,ParametroConj, ListaConj, ExpRegular, listER, ER, SimER, expresion, Comentarios;
+non terminal Evaluar; 
+
+//-------> Precedencia 
+precedence left Disy;
+precedence left Conc;
+precedence left Ast, Positiva, Interro;
 
 start with Inicio;
 
-Inicio ::= LlaveA Instrucciones LlaveC;
-Instrucciones ::= PyC;
+Inicio ::= LlaveA ListaInstruc LlaveC;
+ListaInstruc ::= ListaInstruc Instrucciones
+                | Instrucciones; 
+Instrucciones ::= Conjuntos
+                | ExpRegular;
+Conjuntos ::= CONJ DosP Id:a Flecha PosConj PyC {:RESULT = new Conjunto(a," buscando...");:}; 
+PosConj ::= ParametroConj Tilde ParametroConj
+          | ListaConj;
+ParametroConj ::= Letra
+                | Digito
+                | Simbolo;
+ListaConj ::= ParametroConj 
+             |Coma ParametroConj; 
+ExpRegular ::= Id Flecha listER PyC; 
+listER ::= listER ER 
+         | ER; 
+ER ::= Conc ER:a ER:b {: RESULT = new Hoja("Conc", a.toString(), b.toString()); :}
+     | Disy ER:a ER:b {: RESULT = new Hoja("Disy", a.toString(), b.toString()); :}
+     | Ast ER:a {: RESULT = new Hoja("Ast", a.toString()); :}
+     | Positiva ER:a {: RESULT = new Hoja("Positiva", a.toString()); :}
+     | Interro ER:a {: RESULT = new Hoja("Interro", a.toString()); :}
+     | LlaveA Id:a LlaveC {: RESULT = new String(a); :}
+     | Cadena:a {: RESULT = new String(a); :} ; 
+    
+Evaluar ::= Id DosP Cadena PyC; 

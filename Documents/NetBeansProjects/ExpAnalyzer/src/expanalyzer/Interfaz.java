@@ -216,9 +216,23 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_JMenuAbrirActionPerformed
 
     private void bttAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttAnalizarActionPerformed
+        txtSalida.setText("");
+        Entrada.LimpiarListas();
         try {
             Sintactico sintac = new Sintactico(new Lexico(new StringReader(txtEntrada.getText())));
             sintac.parse();
+            if (Entrada.Error.isEmpty()) {
+                txtSalida.setText("Analisis éxitoso!");
+                int i;
+                for (i = 0; i < Entrada.Result.size(); i++) {
+                    txtSalida.setText("Resultado: " + Entrada.Result.get(i));
+                }
+            } else {
+                int i;
+                for (i = 0; i < Entrada.Error.size(); i++) {
+                    txtSalida.setText(Entrada.Error.get(i));
+                }
+            }
         } catch (Exception ex) {
             Logger.getLogger(Interfaz.class.getName()).log(Level.SEVERE, null, ex);
         }

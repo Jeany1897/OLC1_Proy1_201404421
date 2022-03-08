@@ -12,8 +12,24 @@ import java_cup.runtime.Symbol;
 %cup
 %ignorecase
 
+CADENA =[\"\“\'] [^\"\”\'\n]* [\"\”\'\n]
+BLANCOS=[ \t\r\f\n]+
+digito = [0-9]
+letra = [a-zA-ZñÑ]
+id = {letra}+({letra}|{digito}|"_")*   
+numero = {digito}+("." {digito}+)?
+CommentSimple =   ("//".*\r\n) | ("//".*\n) | ("//".*\r)
+CommentMulti = "<!""<"*([^!>]|[^!]">"|"!"[^>])*"!"*"!>"
+
 
 %%
+/*-------------------------------------------------------------------
+--------------------- 3ra. y ultima area: Reglas Lexicas
+-------------------------------------------------------------------*/
+
+//-------> Comentarios
+
+
 //-------> Palabras reservadas
 "CONJ"                   { return new Symbol(sym.CONJ, yyline, yychar, yytext());}
 
@@ -35,18 +51,19 @@ import java_cup.runtime.Symbol;
 ","                     {return new Symbol(sym.Coma, yyline, yychar, yytext());}  
 "\'"                    {return new Symbol(sym.ComillaSimple, yyline, yychar, yytext());}  
 "\""                    {return new Symbol(sym.ComillaDoble, yyline, yychar, yytext());}  
-"<!"                    {return new Symbol(sym.CommentA, yyline, yychar, yytext());}  
-"!>"                    {return new Symbol(sym.CommentC, yyline, yychar, yytext());}  
                  
 
 //-------> Expresiones Regulares
-[ \n\t\r]+                        {}
-[0-9]                             { return new Symbol(sym.Digito, yyline, yychar, yytext()); }
-//Digito+                            { return new Symbol(sym.Entero, yyline, yychar, yytext()); }
-[a-zA-ZñÑ]                        { return new Symbol(sym.Letra, yyline, yychar, yytext()); }
-[a-zA-ZñÑ]+([a-zA-ZñÑ]|[0-9]|"_")*   { return new Symbol(sym.Id, yyline, yychar, yytext()); }
+{BLANCOS}                      {}
+{CommentSimple}                {}
+{CommentMulti}                 {}
+{digito}                             { return new Symbol(sym.Digito, yyline, yychar, yytext()); }
+[!-/]                           { return new Symbol(sym.Simbolo, yyline, yychar, yytext()); }
+{letra}                        { return new Symbol(sym.Letra, yyline, yychar, yytext()); }
+{id}   { return new Symbol(sym.Id, yyline, yychar, yytext()); }
+{CADENA}     { return new Symbol(sym.Cadena, yyline, yychar, yytext()); }
 
 . {
-    System.out.println("Este es un error léxico: "+yytext() + "en línea"+yyline+" y columna "+yychar);
+    Entrada.Error.add("Este es un error léxico: "+yytext() + "en línea"+yyline+" y columna "+yychar);
 }
 
