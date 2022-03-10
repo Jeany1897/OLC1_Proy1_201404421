@@ -3,6 +3,7 @@ import java_cup.runtime.Symbol;
 import java.util.ArrayList;
 import arbol.Conjunto;
 import arbol.Hoja; 
+import expanalyzer.ExpAnalyzer;
  
 
 parser code {:
@@ -41,7 +42,9 @@ Inicio ::= LlaveA ListaInstruc LlaveC;
 ListaInstruc ::= ListaInstruc Instrucciones
                 | Instrucciones; 
 Instrucciones ::= Conjuntos
-                | ExpRegular;
+                | ExpRegular
+                | Separador
+                | Evaluar;
 Conjuntos ::= CONJ DosP Id:a Flecha PosConj PyC {:RESULT = new Conjunto(a," buscando...");:}; 
 PosConj ::= ParametroConj Tilde ParametroConj
           | ListaConj;
@@ -53,7 +56,7 @@ ListaConj ::= ParametroConj
 ExpRegular ::= Id Flecha listER PyC; 
 listER ::= listER ER 
          | ER; 
-ER ::= Conc ER:a ER:b {: RESULT = new Hoja("Conc", a.toString(), b.toString()); :}
+ER ::= Conc ER:a ER:b {: RESULT = ExpAnalyzer.hojasN.add(new Hoja("Conc", a.toString(), b.toString())); :}
      | Disy ER:a ER:b {: RESULT = new Hoja("Disy", a.toString(), b.toString()); :}
      | Ast ER:a {: RESULT = new Hoja("Ast", a.toString()); :}
      | Positiva ER:a {: RESULT = new Hoja("Positiva", a.toString()); :}

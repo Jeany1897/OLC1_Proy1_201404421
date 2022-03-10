@@ -5,16 +5,22 @@
  */
 package expanalyzer;
 
+import java.util.ArrayList;
+import java.util.List;
+import arbol.Hoja;
+
 /**
  *
  * @author Jeany
  */
 public class ExpAnalyzer {
 
+    public static List <Hoja> hojasN = new ArrayList<Hoja>();
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
         Interfaz inicio = new Interfaz();
         inicio.setVisible(true);
     }

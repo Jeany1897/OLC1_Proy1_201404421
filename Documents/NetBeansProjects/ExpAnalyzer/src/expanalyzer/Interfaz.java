@@ -34,6 +34,7 @@ public class Interfaz extends javax.swing.JFrame {
         initComponents();
     }
     private String NomArch = null;
+    String dotcito;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -100,6 +101,11 @@ public class Interfaz extends javax.swing.JFrame {
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 0, 260, 610));
 
         bttAutomatas.setText("Generar Automatas");
+        bttAutomatas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bttAutomatasActionPerformed(evt);
+            }
+        });
         jPanel1.add(bttAutomatas, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 520, -1, -1));
 
         bttAnalizar.setText("Analizar Entradas");
@@ -292,6 +298,20 @@ public class Interfaz extends javax.swing.JFrame {
     private void JMenuSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JMenuSalidaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JMenuSalidaActionPerformed
+
+    private void bttAutomatasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bttAutomatasActionPerformed
+        dotcito = "digraph G {"
+                + "fontname=\"Helvetica,Arial,sans-serif\" \n"
+                + "node [fontname=\"Helvetica,Arial,sans-serif\", style=fillcolor, color=\"#ff000080\"] \n"
+                + " edge [fontname=\"Helvetica,Arial,sans-serif\"] \n" 
+                + " concentrate=True; \n"
+                + "rankdir=TB; \n"
+                + "node [shape=record, style=fillcolor, color=\"#0000ff80\"]; \n";
+        
+        for(arbol.Hoja h: ExpAnalyzer.hojasN ){
+            System.out.println("Lista " + h.getTipo() + h.getValor1());
+        }
+    }//GEN-LAST:event_bttAutomatasActionPerformed
 
     /**
      * @param args the command line arguments
