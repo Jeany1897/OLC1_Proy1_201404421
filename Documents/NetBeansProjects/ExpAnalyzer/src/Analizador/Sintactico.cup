@@ -53,14 +53,14 @@ ParametroConj ::= Letra
                 | Simbolo;
 ListaConj ::= ParametroConj 
              |Coma ParametroConj; 
-ExpRegular ::= Id Flecha listER PyC; 
+ExpRegular ::= Id:a Flecha listER PyC {: RESULT = new Hoja(a.toString()); :} ; 
 listER ::= listER ER 
          | ER; 
 ER ::= Conc ER:a ER:b {: RESULT = ExpAnalyzer.hojasN.add(new Hoja("Conc", a.toString(), b.toString())); :}
-     | Disy ER:a ER:b {: RESULT = new Hoja("Disy", a.toString(), b.toString()); :}
-     | Ast ER:a {: RESULT = new Hoja("Ast", a.toString()); :}
-     | Positiva ER:a {: RESULT = new Hoja("Positiva", a.toString()); :}
-     | Interro ER:a {: RESULT = new Hoja("Interro", a.toString()); :}
+     | Disy ER:a ER:b {: RESULT = ExpAnalyzer.hojasN.add(new Hoja("Disy", a.toString(), b.toString())); :}
+     | Ast ER:a {: RESULT = ExpAnalyzer.hojasN.add(new Hoja("Ast", a.toString())); :}
+     | Positiva ER:a {: RESULT = ExpAnalyzer.hojasN.add(new Hoja("Positiva", a.toString())); :}
+     | Interro ER:a {: RESULT = ExpAnalyzer.hojasN.add(new Hoja("Interro", a.toString())); :}
      | LlaveA Id:a LlaveC {: RESULT = new String(a); :}
      | Cadena:a {: RESULT = new String(a); :} ; 
     

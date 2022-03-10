@@ -35,6 +35,7 @@ public class Interfaz extends javax.swing.JFrame {
     }
     private String NomArch = null;
     String dotcito;
+    int cont = 1; 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -307,12 +308,36 @@ public class Interfaz extends javax.swing.JFrame {
                 + " concentrate=True; \n"
                 + "rankdir=TB; \n"
                 + "node [shape=record, style=fillcolor, color=\"#0000ff80\"]; \n";
-        
+        String NameArb; 
         for(arbol.Hoja h: ExpAnalyzer.hojasN ){
-            System.out.println("Lista " + h.getTipo() + h.getValor1());
+            System.out.println("Lista " + h.getTipo()+ " Val1 " + h.getValor1() + " Val2 " + h.getValor2());
+            if(h.getTipo().equals("Disy"))
+                Disyuncion(h.getValor1(), h.getValor2());
         }
+        
+        dotcito += "}";
+        System.out.println(dotcito);
     }//GEN-LAST:event_bttAutomatasActionPerformed
 
+    private void Disyuncion(String Val1, String Val2){
+        String Padre = "8"+cont + cont;
+        
+        String h1 = ""+cont;
+        dotcito += h1 + " [label=\" "+ cont +" | {"+ Val1 +"|"+ cont +"} | "+ cont +"\"];"
+                + "\n ";
+        cont++;
+        if(Val2.equals("true")){
+            
+        }
+        dotcito += cont + " [label=\" "+ cont +" | {"+ Val2 +"|"+ cont +"} | "+ cont +"\"];"
+                + "\n ";
+        dotcito += Padre +" [label=\" "+ h1 + ", " + cont  +" | { \\| | } | "+ h1+", "+cont +"\"];"
+                + "\n ";
+        dotcito += Padre + " -> "+h1 + "\n";
+        dotcito += Padre + " -> "+cont + "\n";
+        cont++;
+    }
+    
     /**
      * @param args the command line arguments
      */
